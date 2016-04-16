@@ -3,8 +3,11 @@ package myitschool.ru.vkclient;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 import myitschool.ru.vkclient.service.VK;
+import myitschool.ru.vkclient.service.gson.FriendItem;
 import myitschool.ru.vkclient.service.gson.FriendsGetResponse;
 import myitschool.ru.vkclient.service.gson.ResponseWrapper;
 import retrofit2.Call;
@@ -14,11 +17,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FriendsListActivity extends AppCompatActivity {
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_list);
+
+        mListView = (ListView)findViewById(R.id.listView);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.vk.com/")
@@ -31,6 +37,12 @@ public class FriendsListActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseWrapper<FriendsGetResponse>> call, Response<ResponseWrapper<FriendsGetResponse>> response) {
                 Log.d("VK", "response.count " + response.body().getResponse().getCount());
+
+                mListView.setAdapter(new ArrayAdapter<>(
+                        FriendsListActivity.this,
+                        android.R.layout.simple_list_item_1,
+                        response.body().getResponse().getItems()
+                ));
             }
 
             @Override
