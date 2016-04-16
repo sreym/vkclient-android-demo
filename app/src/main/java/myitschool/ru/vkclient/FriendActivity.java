@@ -29,6 +29,8 @@ public class FriendActivity extends AppCompatActivity {
     ImageView mImageView;
     EditText mEditText;
 
+    UserItem user;
+
     public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -73,7 +75,7 @@ public class FriendActivity extends AppCompatActivity {
                 .enqueue(new Callback<ResponseWrapper<List<UserItem>>>() {
                     @Override
                     public void onResponse(Call<ResponseWrapper<List<UserItem>>> call, Response<ResponseWrapper<List<UserItem>>> response) {
-                        UserItem user = response.body().getResponse().get(0);
+                        user = response.body().getResponse().get(0);
                         mTextView.setText(user.getFirstName() + " " + user.getLastName());
                         new DownloadImageTask(mImageView).execute(user.getPhotoOrig400());
                     }
@@ -87,6 +89,17 @@ public class FriendActivity extends AppCompatActivity {
     }
 
     public void sendMessageBtnClick(View v) {
+        service.sendMessage(getIntent().getStringExtra("access_token"), user.getId(), mEditText.getText().toString())
+                .enqueue(new Callback<ResponseWrapper<Integer>>() {
+                    @Override
+                    public void onResponse(Call<ResponseWrapper<Integer>> call, Response<ResponseWrapper<Integer>> response) {
+                        mEditText.setText("");
+                    }
 
+                    @Override
+                    public void onFailure(Call<ResponseWrapper<Integer>> call, Throwable t) {
+                        t.printStackTrace(System.err);
+                    }
+                });
     }
 }

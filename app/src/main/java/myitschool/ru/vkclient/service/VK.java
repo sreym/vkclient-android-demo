@@ -20,4 +20,10 @@ public interface VK {
     Call<ResponseWrapper<List<UserItem>>> getUser(
             @Query("access_token") String access_token,
             @Query("user_ids") Integer user_id);
+
+    @GET("method/messages.send?v=5.50")
+    Call<ResponseWrapper<Integer>> sendMessage(
+            @Query("access_token") String access_token,
+            @Query("user_id") Integer user_id,
+            @Query("message") String message);
 }
