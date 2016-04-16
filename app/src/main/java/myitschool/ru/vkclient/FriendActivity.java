@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import myitschool.ru.vkclient.service.VK;
@@ -25,6 +27,7 @@ public class FriendActivity extends AppCompatActivity {
     VK service;
     TextView mTextView;
     ImageView mImageView;
+    EditText mEditText;
 
     public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -57,6 +60,7 @@ public class FriendActivity extends AppCompatActivity {
 
         mTextView = (TextView)findViewById(R.id.textView);
         mImageView = (ImageView)findViewById(R.id.imageView);
+        mEditText = (EditText)findViewById(R.id.editText);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.vk.com/")
@@ -79,6 +83,10 @@ public class FriendActivity extends AppCompatActivity {
                         t.printStackTrace(System.err);
                     }
                 });
+
+    }
+
+    public void sendMessageBtnClick(View v) {
 
     }
 }
