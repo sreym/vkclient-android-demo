@@ -1,8 +1,11 @@
 package myitschool.ru.vkclient;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -48,6 +51,17 @@ public class FriendsListActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseWrapper<FriendsGetResponse>> call, Throwable t) {
                 t.printStackTrace(System.err);
+            }
+        });
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FriendItem friend = (FriendItem) parent.getItemAtPosition(position);
+                Intent intent = new Intent(FriendsListActivity.this, FriendActivity.class);
+                intent.putExtra("access_token", FriendsListActivity.this.getIntent().getStringExtra("access_token"));
+                intent.putExtra("user_id", friend.getId());
+                FriendsListActivity.this.startActivity(intent);
             }
         });
 
